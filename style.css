@@ -1,3 +1,12 @@
+ /* blue = #44B7E0 */
+ 
+ #example > thead > tr {
+     background-color: #EEEFEF;
+ }
+ #example > tbody > tr > td{
+    background-color: #F9F9F9;
+}
+
 .dataTables_filter > label {
     display: none;
  }
@@ -6,6 +15,56 @@
      display: none;
  }
 
-#Search {
-    width: 75%;
+ div.table-responsive > div.dataTables_wrapper > div.row {
+    padding-top: 10px !important;
+    background-color: #EEEFEF;
+ }
+
+ table.dataTable {
+    margin-bottom: 0px !important;
+}
+
+.dataTables_filter_custom {
+    padding-left: 15px;
+}
+
+.page-item.active > .page-link {
+    color: white !important;
+    background-color: #44B7E0 !important;
+    /* border: 1px solid gray; */
+}
+.page-link {
+    color: black !important;
+}
+
+#example_wrapper > div:nth-child(1) > div:nth-child(2) {
+    display: none;
+}
+
+ /* dari mas alief */
+
+#example_length {
+    /* color: #878787; */
+    /* margin: 7px 5px 0; */
+    /* right: 2px; */
+    /* top: -2px; */
+    /* display: none; */
+    text-align: right;
+}
+
+.dataTables_paginate {
+    padding-right: 15px;
+    line-height: 5px;
+    text-align: right;
+}
+
+
+
+th, td { white-space: nowrap; }
+div.dataTables_wrapper {
+    /* margin: 0 auto; */
+}
+
+div.container {
+    /* width: 80%; */
 }
