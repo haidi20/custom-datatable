@@ -1,0 +1,11 @@
+.dataTables_filter > label {
+    display: none;
+ }
+
+ .dataTables_info {
+     display: none;
+ }
+
+#Search {
+    width: 75%;
+}
