@@ -161,15 +161,18 @@
                 lengthMenu: [5, 10, 20],
                 scrollCollapse: true,
                 fixedColumns: true,
+                "pagingType": "full_numbers",
             });
 
+            handleTopDatatable();
+            handleSearch(table);
+        });
+
+        function handleTopDatatable(){
             $('#example_wrapper > div:nth-child(1) > div:nth-child(1)').removeClass('col-md-6').addClass('col-md-12');
             $('#example_wrapper > div:nth-child(3) > div:nth-child(1)').removeClass('col-md-5').addClass('col-md-4');
             $('#example_wrapper > div:nth-child(3) > div:nth-child(2)').removeClass('col-md-7').addClass('col-md-8');
-
-
-            handleSearch(table);
-        });
+        }
 
         function handleSearch(table){
             const search = `<div id="example_filter" class="dataTables_filter_custom">
