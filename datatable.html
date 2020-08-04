@@ -19,128 +19,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>RFID</th>
-                                <th>NRP</th>
-                                <th>NAMA</th>
-                                <th>DEPT</th>
-                                <th>PERUSAHAAN</th>
-                                <th>KEPERLUAN</th>
-                                <th>AWAL</th>
-                                <th>AKHIR</th>
+                                <th>NAME</th>
+                                <!-- <th>COUNTRY</th> -->
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                                <td>GS00009</td>
-                                <td>0006805743</td>
-                                <td>SN19003</td>
-                                <td>IRFANSYAH</td>
-                                <td>SHCG</td>
-                                <td>VENDOR IT</td>
-                                <td>SATNET</td>
-                                <td>2020-07-13</td>
-                                <td>2020-12-31</td>
-                            </tr>
-                            <tr>
-                                <td>GS00008</td>
-                                <td>0006806099</td>
-                                <td>PAM01</td>
-                                <td>KORAMIL</td>
-                                <td>SHCG</td>
-                                <td>VISITOR</td>
-                                <td>PAMA</td>
-                                <td>2020-06-16</td>
-                                <td>2020-12-31</td>
-                            </tr>
-                            <tr>
-                                <td>GS00007</td>
-                                <td>0006740554</td>
-                                <td>LANAL02</td>
-                                <td>TNI</td>
-                                <td>SHCG</td>
-                                <td>PAM LANAL</td>
-                                <td>TNIAL</td>
-                                <td>2020-05-09</td>
-                                <td>2020-12-31</td>
-                            </tr>
-                            <tr>
-                                <td>GS00006</td>
-                                <td>0006723706</td>
-                                <td>LANAL01</td>
-                                <td>TNI</td>
-                                <td>SHCG</td>
-                                <td>PAM LANAL</td>
-                                <td>TNIAL</td>
-                                <td>2020-05-09</td>
-                                <td>2020-12-31</td>
-                            </tr>
-                            <tr>
-                                <td>GS00005</td>
-                                <td>0006731871</td>
-                                <td>RSPKT04</td>
-                                <td>PERAWAT</td>
-                                <td>SSHE</td>
-                                <td>PERAWAT</td>
-                                <td>RSPKT</td>
-                                <td>2020-05-06</td>
-                                <td>2020-12-31</td>
-                            </tr>
-                            <tr>
-                                <td>GS00004</td>
-                                <td>0006729700</td>
-                                <td>RSPKT03</td>
-                                <td>PERAWAT</td>
-                                <td>SSHE</td>
-                                <td>PERAWAT</td>
-                                <td>RSPKT</td>
-                                <td>2020-05-07</td>
-                                <td>2020-12-31</td>
-                            </tr>
-                            <tr>
-                                <td>GS00003</td>
-                                <td>0006741369</td>
-                                <td>RSPKT02</td>
-                                <td>PERAWAT</td>
-                                <td>SSHE</td>
-                                <td>PERAWAT</td>
-                                <td>RSPKT</td>
-                                <td>2020-05-07</td>
-                                <td>2020-12-31</td>
-                            </tr>
-                            <tr>
-                                <td>GS00002</td>
-                                <td>0006748395</td>
-                                <td>RSPKT01</td>
-                                <td>DOKTER</td>
-                                <td>SSHE</td>
-                                <td>DOKTER</td>
-                                <td>RSPKT</td>
-                                <td>2020-05-07</td>
-                                <td>2020-12-31</td>
-                            </tr>
-                            <tr>
-                                <td>GS00001</td>
-                                <td>12312312321</td>
-                                <td>ZK086787</td>
-                                <td>ROBERT ARY</td>
-                                <td>SHCG</td>
-                                <td>DESKTOP ENGINEER</td>
-                                <td>BERCA </td>
-                                <td>2020-05-06</td>
-                                <td>2020-05-13</td>
-                            </tr>
-                            <tr>
-                                <td>GS00000</td>
-                                <td>AWSSDF</td>
-                                <td>1H12030</td>
-                                <td>ALIEF KRESNA</td>
-                                <td>HCGS</td>
-                                <td>IT OFFICER</td>
-                                <td>PAMA</td>
-                                <td>2020-01-01</td>
-                                <td>2020-01-31</td>
-                            </tr>
-                        </tbody>
                     </table>
                 </div>
             </div>
@@ -153,7 +35,10 @@
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"  crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"  crossorigin="anonymous"></script>
     <script>
+        var size = 5;
+        var page = 0;
         $(document).ready(function() {
+
             const table = $('#example').DataTable({
                 responsive: true,
                 "scrollX": true,
@@ -161,11 +46,42 @@
                 lengthMenu: [5, 10, 20],
                 scrollCollapse: true,
                 fixedColumns: true,
+                "processing": true,
+                "serverSide": true,
                 "pagingType": "full_numbers",
+                "ajax": {
+                    "url": `https://api.instantwebtools.net/v1/passenger`,
+                    data: function(d){
+                        d.page=page;
+                        d.size=size;
+                    },
+                    "dataSrc": "",
+                    "dataFilter": function(d){
+                        let data = JSON.parse(d);
+                        data = data.data;
+                        console.log(data);
+
+                        let result = {
+                            data: {
+                                _id: data._id,
+                                name: data.name,
+                            }
+                            // country: data.airline,
+                        }
+
+                        return JSON.stringify(data);                        
+                    },
+                },                
+                "columns": [
+                    { "data": "_id" },
+                    { "data": "name" },
+                    // { "data": "airline.country" },
+                ],
             });
 
-            handleTopDatatable();
             handleSearch(table);
+            handleTopDatatable();
+            handlePaginate(table);
         });
 
         function handleTopDatatable(){
@@ -187,6 +103,18 @@
             $("#Search").keyup(function() {
                 table.search(this.value).draw();
             }); 
+        }
+
+        function handlePaginate(table){
+            $('#example').on( 'page.dt', function () {
+                var info = table.page.info();
+
+                console.log(info);
+                page = info.page;
+
+                table.ajax.reload(null, false);
+                // $('#pageInfo').html( 'Showing page: '+info.page+' of '+info.pages );
+            } );
         }
     </script>
 </body>
