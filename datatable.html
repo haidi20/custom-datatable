@@ -42,47 +42,53 @@
             const table = $('#example').DataTable({
                 responsive: true,
                 "scrollX": true,
-                pageLength: 5,
+                // pageLength: 0,
                 lengthMenu: [5, 10, 20],
                 scrollCollapse: true,
                 fixedColumns: true,
                 "processing": true,
                 "serverSide": true,
-                "pagingType": "full_numbers",
-                "ajax": {
-                    "url": `https://api.instantwebtools.net/v1/passenger`,
-                    data: function(d){
-                        d.page=page;
-                        d.size=size;
-                    },
-                    "dataSrc": "",
-                    "dataFilter": function(d){
-                        let data = JSON.parse(d);
-                        data = data.data;
-                        console.log(data);
-
-                        let result = {
-                            data: {
-                                _id: data._id,
-                                name: data.name,
-                            }
-                            // country: data.airline,
-                        }
-
-                        return JSON.stringify(data);                        
-                    },
-                },                
+                // "pagingType": "full_numbers",
+                "ajax": handleAjax(),                
                 "columns": [
                     { "data": "_id" },
                     { "data": "name" },
                     // { "data": "airline.country" },
                 ],
+                "drawCallback": function( settings ) {
+                    var api = this.api();
+                    // console.log( api.ajax.json() );
+                    $("#example_next").removeClass("disabled");
+                    $("#example_previous").removeClass("disabled");
+
+                    $('#example_next').click(function () {
+                        page += 1;
+                    });
+                },
             });
 
             handleSearch(table);
             handleTopDatatable();
             handlePaginate(table);
+            handleSelectShowPage(table);
         });
+
+        function handleAjax () {
+            return {
+                "url": `https://api.instantwebtools.net/v1/passenger`,
+                data: function(d){
+                    d.page=page;
+                    d.size=size;
+                },
+                "dataSrc": "",
+                "dataFilter": function(d){
+                    let data = JSON.parse(d);
+                    data = data.data;
+
+                    return JSON.stringify(data);                        
+                },
+            };
+        }
 
         function handleTopDatatable(){
             $('#example_wrapper > div:nth-child(1) > div:nth-child(1)').removeClass('col-md-6').addClass('col-md-12');
@@ -94,7 +100,7 @@
             const search = `<div id="example_filter" class="dataTables_filter_custom">
                                 <div class="form-group">
                                     <label for="Search">Search: </label>
-                                    <input name="Search" id="Search"  />
+                                    <input name="Search" id="Search"/>
                                 </div>
                             </div>`;
 
@@ -105,16 +111,24 @@
             }); 
         }
 
-        function handlePaginate(table){
+        async function handlePaginate(table){
             $('#example').on( 'page.dt', function () {
                 var info = table.page.info();
 
-                console.log(info);
+                // console.log(info);
                 page = info.page;
 
                 table.ajax.reload(null, false);
                 // $('#pageInfo').html( 'Showing page: '+info.page+' of '+info.pages );
             } );
+        }
+
+        function handleSelectShowPage(table)
+        {
+            $('#_10').on( 'click', function () {
+                console.log('10 page show');
+                table.page.len( 10 ).draw();
+            });
         }
     </script>
 </body>
